@@ -40,7 +40,7 @@ int main() {
     // CPU timing variables
     uint64_t work_start, work_end;
 
-    // 🔹 ADDED: latency correction variables
+    
     int warmup = 5;
     int synced = 0;
     int64_t offset_cycles = 0;
@@ -63,14 +63,13 @@ int main() {
                 continue;
             }
 
-            // 🔹 Ignore first few samples
+
             if (warmup > 0) {
                 warmup--;
                 MsgReply(rcvid, 0, NULL, 0);
                 continue;
             }
 
-            // 🔹 First valid sample → sync offset
             if (!synced) {
                 offset_cycles = now - data.timestamp;
                 synced = 1;
@@ -79,12 +78,12 @@ int main() {
                 continue;
             }
 
-            // 🔹 CORRECTED LATENCY
+
             double latency_ms =
                 (double)((now - data.timestamp) - offset_cycles)
                 / cycles_per_sec * 1000;
 
-            // 🔹 JITTER
+            //  JITTER
             double jitter = 0;
             if (!first_sample) {
                 jitter = latency_ms - prev_latency;
